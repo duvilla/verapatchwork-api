@@ -1,16 +1,15 @@
 const path = require('path');
+const parse = require('pg-connection-string').parse;
+
 
 module.exports = ({ env }) => {
   const dbClient = env('DATABASE_CLIENT', 'postgres')
-
+  const postgresConfig = parse(env('DATABASE_URL'))
+  
   const postgresConnection = {
     client: 'postgres',
     connection: {
-      host: env('DATABASE_HOST', '127.0.0.1'),
-      port: env.int('DATABASE_PORT', 5432),
-      database: env('DATABASE_NAME', 'verapatchwork'),
-      user: env('DATABASE_USERNAME', 'verapatchwork'),
-      password: env('DATABASE_PASSWORD', 'verapatchwork'),
+      ...postgresConfig,
       ssl: env.bool('DATABASE_SSL', true),
     },
   }
